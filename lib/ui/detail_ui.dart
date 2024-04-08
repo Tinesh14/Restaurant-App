@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:readmore/readmore.dart';
-import 'package:restaurant_app_v1/utils/appbar.dart';
 
-import '../model/restaurant.dart';
+import '../data/model/restaurant.dart';
+import '../widgets/appbar.dart';
 
 class DetailUi extends StatefulWidget {
   Restaurant item;

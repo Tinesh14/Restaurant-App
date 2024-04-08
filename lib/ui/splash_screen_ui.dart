@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:restaurant_app_v1/config/routes/routes.dart';
+
+import '../common/routes.dart';
 
 class SplashScreenUi extends StatefulWidget {
   const SplashScreenUi({super.key});

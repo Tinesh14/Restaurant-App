@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app_v1/config/routes/routes.dart';
-import 'package:restaurant_app_v1/pages/splash_screen_ui.dart';
+
+import 'common/routes.dart';
+import 'ui/splash_screen_ui.dart';
 
 void main() {
   runApp(const MyApp());

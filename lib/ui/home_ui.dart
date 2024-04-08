@@ -5,8 +5,9 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:restaurant_app_v1/config/routes/routes.dart';
-import 'package:restaurant_app_v1/model/restaurant.dart';
+
+import '../common/routes.dart';
+import '../data/model/restaurant.dart';
 
 class HomeUi extends StatefulWidget {
   const HomeUi({super.key});

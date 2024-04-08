@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app_v1/model/restaurant.dart';
-import 'package:restaurant_app_v1/pages/detail_ui.dart';
-import 'package:restaurant_app_v1/pages/home_ui.dart';
+
+import '../data/model/restaurant.dart';
+import '../ui/detail_ui.dart';
+import '../ui/home_ui.dart';
+
 
 class PageRoutes {
   static String homeUi = "home_ui";
