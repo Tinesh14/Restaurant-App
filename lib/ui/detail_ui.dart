@@ -24,6 +24,7 @@ class DetailUi extends StatefulWidget {
 class _DetailUiState extends State<DetailUi> {
   @override
   Widget build(BuildContext context) {
+    widget.item = Restaurant();
     return CustomAppBar(
       tag: widget.item.pictureId ?? 'image',
       titleAppBar: widget.item.name ?? '',
