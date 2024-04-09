@@ -1,13 +1,14 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:restaurant_app_v1/cubit/list_restaurant_cubit.dart';
+import 'package:restaurant_app_v1/cubit/list_restaurant_state.dart';
+import 'package:restaurant_app_v1/data/api/api_service.dart';
+import 'package:restaurant_app_v1/utils/snackbar.dart';
 
 import '../common/routes.dart';
-import '../data/model/restaurant.dart';
 
 class HomeUi extends StatefulWidget {
   const HomeUi({super.key});
@@ -19,30 +20,11 @@ class HomeUi extends StatefulWidget {
 class _HomeUiState extends State<HomeUi> {
   final TextEditingController _searchController = TextEditingController();
   String? filterString;
+  ListRestaurantCubit? cubitListRestaurant;
 
   @override
   void initState() {
     super.initState();
-  }
-
-  Future<List<Restaurant>> loadData({String? filter}) async {
-    String jsonString =
-        await rootBundle.loadString('assets/local_restaurant.json');
-    var json = jsonDecode(jsonString);
-    Iterable data = json['restaurants'];
-    var list = List<Restaurant>.from(data.map((e) => Restaurant.fromJson(e)));
-    if (filter != null && filter.isNotEmpty) {
-      return list
-          .where((element) =>
-                  (element.name?.toLowerCase().contains(filter.toLowerCase()) ??
-                      false)
-              //     ||
-              // (element.city?.toLowerCase().contains(filter.toLowerCase()) ??
-              //     false)
-              )
-          .toList();
-    }
-    return List<Restaurant>.from(data.map((e) => Restaurant.fromJson(e)));
   }
 
   @override
@@ -51,114 +33,144 @@ class _HomeUiState extends State<HomeUi> {
       backgroundColor: const Color.fromARGB(255, 245, 241, 241),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: FutureBuilder<List<Restaurant>>(
-          future: loadData(filter: filterString),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-            } else {
-              var dataRestaurant = snapshot.data;
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 80,
-                    ),
-                    const Text(
-                      "Restaurant",
-                      style: TextStyle(
-                        fontSize: 24,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 80,
+              ),
+              const Text(
+                "Restaurant",
+                style: TextStyle(
+                  fontSize: 24,
+                ),
+              ),
+              const Text(
+                "Recommendation restaurant for you!",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _searchController,
+                  onChanged: (value) {
+                    if (value.isEmpty) {
+                      if (cubitListRestaurant != null) {
+                        cubitListRestaurant?.init(isLoad: true);
+                      }
+                    }
+                  },
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.orange,
                       ),
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
-                    const Text(
-                      "Recommendation restaurant for you!",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        controller: _searchController,
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.orange,
-                            ),
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          hintText: 'Search restaurant name ...',
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              if (_searchController.text.isNotEmpty) {
-                                FocusScope.of(context).unfocus();
-                                setState(() {
-                                  filterString = null;
-                                  _searchController.clear();
-                                });
-                              }
-                            },
-                          ),
-                          prefixIcon: IconButton(
-                            icon: const Icon(Icons.search),
-                            onPressed: () {
-                              if (_searchController.text.isNotEmpty) {
-                                FocusScope.of(context).unfocus();
-                                setState(() {
-                                  filterString = _searchController.text;
-                                  // _searchController.clear();
-                                });
-                              }
-                            },
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // const SizedBox(
-                    //   height: 10,
-                    // ),
-                    ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: dataRestaurant?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        var item = dataRestaurant?[index];
-                        return InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              PageRoutes.detailUi,
-                              arguments: item,
-                            );
-                          },
-                          child: widgetRowRestaurant(
-                            item?.pictureId ?? '',
-                            item?.name ?? '',
-                            item?.city ?? '',
-                            item?.rating.toString() ?? '',
-                          ),
-                        );
+                    hintText: 'Search restaurant name ...',
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        if (_searchController.text.isNotEmpty) {
+                          FocusScope.of(context).unfocus();
+                          _searchController.clear();
+                          if (cubitListRestaurant != null) {
+                            cubitListRestaurant?.init(isLoad: true);
+                          }
+                        }
                       },
                     ),
-                  ],
+                    prefixIcon: IconButton(
+                      icon: const Icon(Icons.search),
+                      onPressed: () {
+                        if (_searchController.text.isNotEmpty) {
+                          FocusScope.of(context).unfocus();
+                          if (cubitListRestaurant != null) {
+                            cubitListRestaurant?.search(_searchController.text);
+                          }
+                        } else {
+                          showShortSnackBar(
+                              context, 'Silahkan isi search input');
+                        }
+                      },
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                  ),
                 ),
-              );
-            }
-          },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              BlocProvider<ListRestaurantCubit>(
+                create: (context) => ListRestaurantCubit(
+                  ApiService(),
+                ),
+                child: BlocConsumer<ListRestaurantCubit, ListRestaurantState>(
+                  builder: (context, state) {
+                    cubitListRestaurant =
+                        BlocProvider.of<ListRestaurantCubit>(context);
+                    if (state is ListRestaurantLoading) {
+                      return const Center(
+                        child:
+                            CircularProgressIndicator(), //ubah pake animasi lottie
+                      );
+                    } else if (state is ListRestaurantEmpty) {
+                      return const Center(
+                        child: Text(
+                            'No Data Available'), //ubah pake animasi lottie
+                      );
+                    } else if (state is ListRestaurantError) {
+                      return Center(
+                        child: Text(
+                            'Error: ${state.message}'), //ubah pake animasi lottie
+                      );
+                    } else if (state is ListRestaurantOffline) {
+                      return const Center(
+                        child: Text(
+                            'This internet is offline !!!'), //ubah pake animasi lottie
+                      );
+                    } else if (state is ListRestaurantSuccess) {
+                      var dataRestaurant = state.dataRestaurant;
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: dataRestaurant.length,
+                        itemBuilder: (context, index) {
+                          var item = dataRestaurant[index];
+                          return InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                PageRoutes.detailUi,
+                                arguments: item,
+                              );
+                            },
+                            child: widgetRowRestaurant(
+                              item.pictureId ?? '',
+                              item.name ?? '',
+                              item.city ?? '',
+                              item.rating.toString(),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  },
+                  listener: (context, state) {},
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -190,7 +202,7 @@ class _HomeUiState extends State<HomeUi> {
                 child: CachedNetworkImage(
                   height: 100,
                   width: 100,
-                  imageUrl: image,
+                  imageUrl: ApiService().imageUrl(image),
                   fit: BoxFit.contain,
                   placeholder: (context, url) =>
                       const CircularProgressIndicator(),

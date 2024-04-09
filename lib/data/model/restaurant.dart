@@ -15,7 +15,7 @@ class Restaurant {
   final String? pictureId;
   final List<Category>? categories;
   final Menus? menus;
-  final double? rating;
+  final dynamic rating;
   final List<CustomerReview>? customerReviews;
 
   Restaurant({

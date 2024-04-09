@@ -19,7 +19,7 @@ Restaurant _$RestaurantFromJson(Map<String, dynamic> json) => Restaurant(
       menus: json['menus'] == null
           ? null
           : Menus.fromJson(json['menus'] as Map<String, dynamic>),
-      rating: (json['rating'] as num?)?.toDouble(),
+      rating: json['rating'],
       customerReviews: (json['customerReviews'] as List<dynamic>?)
           ?.map((e) => CustomerReview.fromJson(e as Map<String, dynamic>))
           .toList(),

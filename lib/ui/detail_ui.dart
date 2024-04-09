@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:readmore/readmore.dart';
+import 'package:restaurant_app_v1/data/api/api_service.dart';
 
 import '../data/model/restaurant.dart';
 import '../widgets/appbar.dart';
@@ -24,11 +25,14 @@ class DetailUi extends StatefulWidget {
 class _DetailUiState extends State<DetailUi> {
   @override
   Widget build(BuildContext context) {
-    widget.item = Restaurant();
+    // widget.item = Restaurant();
     return CustomAppBar(
       tag: widget.item.pictureId ?? 'image',
       titleAppBar: widget.item.name ?? '',
-      urlImage: widget.item.pictureId ?? '',
+      urlImage: ApiService().imageUrl(
+        widget.item.pictureId ?? '',
+        resolution: "medium",
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: SingleChildScrollView(
