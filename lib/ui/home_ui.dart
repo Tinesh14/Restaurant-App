@@ -7,6 +7,10 @@ import 'package:restaurant_app_v1/cubit/list_restaurant_cubit.dart';
 import 'package:restaurant_app_v1/cubit/list_restaurant_state.dart';
 import 'package:restaurant_app_v1/data/api/api_service.dart';
 import 'package:restaurant_app_v1/utils/snackbar.dart';
+import 'package:restaurant_app_v1/widgets/empty.dart';
+import 'package:restaurant_app_v1/widgets/error.dart';
+import 'package:restaurant_app_v1/widgets/loading.dart';
+import 'package:restaurant_app_v1/widgets/offline.dart';
 
 import '../common/routes.dart';
 
@@ -35,6 +39,7 @@ class _HomeUiState extends State<HomeUi> {
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
@@ -118,24 +123,21 @@ class _HomeUiState extends State<HomeUi> {
                     cubitListRestaurant =
                         BlocProvider.of<ListRestaurantCubit>(context);
                     if (state is ListRestaurantLoading) {
-                      return const Center(
-                        child:
-                            CircularProgressIndicator(), //ubah pake animasi lottie
-                      );
+                      return const LoadingAnimation();
                     } else if (state is ListRestaurantEmpty) {
-                      return const Center(
-                        child: Text(
-                            'No Data Available'), //ubah pake animasi lottie
-                      );
+                      return const EmptyAnimation();
                     } else if (state is ListRestaurantError) {
-                      return Center(
-                        child: Text(
-                            'Error: ${state.message}'), //ubah pake animasi lottie
+                      return ErrorAnimation(
+                        onPressed: () {
+                          cubitListRestaurant?.init(isLoad: true);
+                        },
+                        message: state.message,
                       );
                     } else if (state is ListRestaurantOffline) {
-                      return const Center(
-                        child: Text(
-                            'This internet is offline !!!'), //ubah pake animasi lottie
+                      return OfflineAnimation(
+                        onPressed: () {
+                          cubitListRestaurant?.init(isLoad: true);
+                        },
                       );
                     } else if (state is ListRestaurantSuccess) {
                       var dataRestaurant = state.dataRestaurant;
@@ -150,7 +152,7 @@ class _HomeUiState extends State<HomeUi> {
                               Navigator.pushNamed(
                                 context,
                                 PageRoutes.detailUi,
-                                arguments: item,
+                                arguments: item.id ?? "",
                               );
                             },
                             child: widgetRowRestaurant(
@@ -177,11 +179,7 @@ class _HomeUiState extends State<HomeUi> {
   }
 
   widgetRowRestaurant(
-    String image,
-    String title,
-    String location,
-    String rating,
-  ) {
+      String image, String title, String location, String rating) {
     return Column(
       children: [
         Container(

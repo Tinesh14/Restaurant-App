@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app_v1/data/model/restaurant.dart';
 
 import '../ui/detail_ui.dart';
 import '../ui/home_ui.dart';
@@ -12,8 +11,9 @@ class PageRoutes {
     return {
       homeUi: (context) => const HomeUi(),
       detailUi: (context) {
+        String argument = ModalRoute.of(context)?.settings.arguments as String;
         return DetailUi(
-          item: Restaurant(),
+          id: argument,
         );
       }
     };
