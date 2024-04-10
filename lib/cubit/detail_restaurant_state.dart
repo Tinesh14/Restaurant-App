@@ -14,6 +14,11 @@ class DetailRestaurantError extends DetailRestaurantState {
   const DetailRestaurantError({this.message});
 }
 
+class DetailRestaurantMessage extends DetailRestaurantState {
+  final String message;
+  const DetailRestaurantMessage({required this.message});
+}
+
 class DetailRestaurantSuccess extends DetailRestaurantState {
   final Restaurant dataRestaurant;
   const DetailRestaurantSuccess(this.dataRestaurant);

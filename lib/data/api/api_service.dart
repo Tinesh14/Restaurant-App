@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+import 'package:restaurant_app_v1/data/model/customer_review.dart';
 import 'package:restaurant_app_v1/data/model/detail_restaurant.dart';
 import 'package:restaurant_app_v1/data/model/list_restaurant.dart';
 
@@ -49,17 +52,18 @@ class ApiService {
     }
   }
 
-  Future<RestaurantList> addReviewRestaurant(Map<String, dynamic> data) async {
+  Future<CustomerReviewResult> addReviewRestaurant(
+      Map<String, dynamic> data) async {
     try {
       final response = await http.post(
         Uri.parse("$_baseUrl/review"),
         headers: {
           "Content-Type": "application/json",
         },
-        body: data,
+        body: jsonEncode(data),
       );
-      if (response.statusCode == 200) {
-        return restaurantListFromJson(response.body);
+      if (response.statusCode == 201) {
+        return CustomerReviewResult.fromJson(jsonDecode(response.body));
       } else {
         throw Exception('Failed to add restaurant review ');
       }

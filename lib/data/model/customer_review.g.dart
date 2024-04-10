@@ -6,6 +6,24 @@ part of 'customer_review.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+CustomerReviewResult _$CustomerReviewResultFromJson(
+        Map<String, dynamic> json) =>
+    CustomerReviewResult(
+      error: json['error'] as bool?,
+      message: json['message'] as String?,
+      customerReviews: (json['customerReviews'] as List<dynamic>?)
+          ?.map((e) => CustomerReview.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$CustomerReviewResultToJson(
+        CustomerReviewResult instance) =>
+    <String, dynamic>{
+      'error': instance.error,
+      'message': instance.message,
+      'customerReviews': instance.customerReviews,
+    };
+
 CustomerReview _$CustomerReviewFromJson(Map<String, dynamic> json) =>
     CustomerReview(
       name: json['name'] as String?,

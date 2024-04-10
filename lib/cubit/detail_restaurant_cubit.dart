@@ -26,4 +26,16 @@ class DetailRestaurantCubit extends Cubit<DetailRestaurantState> {
       }
     }
   }
+
+  addReview(Map<String, dynamic> data) async {
+    try {
+      emit(DetailRestaurantLoading());
+      var response = await apiService.addReviewRestaurant(data);
+      emit(DetailRestaurantMessage(message: response.message ?? ''));
+      init(isLoad: true);
+    } catch (e) {
+      emit(const DetailRestaurantMessage(message: 'Something Went Wrong !!!'));
+      init(isLoad: true);
+    }
+  }
 }
