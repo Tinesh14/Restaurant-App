@@ -33,8 +33,8 @@ class Restaurant {
     this.customerReviews,
   });
 
-  factory Restaurant.fromJson(Map<String, dynamic> json) =>
-      _$RestaurantFromJson(json);
+  factory Restaurant.fromJson(Map<String, dynamic> json, {bool decodeString = false}) =>
+      _$RestaurantFromJson(json, decodeString);
 
   Map<String, dynamic> toJson({bool convertToString = false}) =>
       _$RestaurantToJson(this, convertToString);

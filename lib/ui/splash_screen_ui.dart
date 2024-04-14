@@ -37,7 +37,7 @@ class _SplashScreenUiState extends State<SplashScreenUi>
                 ..forward().whenComplete(
                   () => Navigator.popAndPushNamed(
                     context,
-                    PageRoutes.homeUi,
+                    PageRoutes.bottomNavigation,
                   ),
                 );
             },

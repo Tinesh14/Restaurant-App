@@ -6,23 +6,36 @@ part of 'restaurant.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Restaurant _$RestaurantFromJson(Map<String, dynamic> json) => Restaurant(
+Restaurant _$RestaurantFromJson(Map<String, dynamic> json, bool decodeString) =>
+    Restaurant(
       id: json['id'] as String?,
       name: json['name'] as String?,
       description: json['description'] as String?,
       city: json['city'] as String?,
       address: json['address'] as String?,
       pictureId: json['pictureId'] as String?,
-      categories: (json['categories'] as List<dynamic>?)
-          ?.map((e) => Category.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      categories: decodeString
+          ? List<Category>.from(
+              (jsonDecode(json['categories']) as Iterable)
+                  .map((e) => Category.fromJson(e as Map<String, dynamic>)),
+            )
+          : (json['categories'] as List<dynamic>?)
+              ?.map((e) => Category.fromJson(e as Map<String, dynamic>))
+              .toList(),
       menus: json['menus'] == null
           ? null
-          : Menus.fromJson(json['menus'] as Map<String, dynamic>),
+          : decodeString
+              ? Menus.fromJson(
+                  jsonDecode(json['menus']) as Map<String, dynamic>)
+              : Menus.fromJson(json['menus'] as Map<String, dynamic>),
       rating: json['rating'],
-      customerReviews: (json['customerReviews'] as List<dynamic>?)
-          ?.map((e) => CustomerReview.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      customerReviews: decodeString
+          ? List<CustomerReview>.from((jsonDecode(json['customerReviews'])
+                  as Iterable)
+              .map((e) => CustomerReview.fromJson(e as Map<String, dynamic>)))
+          : (json['customerReviews'] as List<dynamic>?)
+              ?.map((e) => CustomerReview.fromJson(e as Map<String, dynamic>))
+              .toList(),
     );
 
 Map<String, dynamic> _$RestaurantToJson(

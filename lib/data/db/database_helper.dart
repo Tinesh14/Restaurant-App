@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../model/restaurant.dart';
@@ -54,7 +55,9 @@ class DatabaseHelper {
     final db = await database;
     List<Map<String, dynamic>>? results = await db?.query(_tblBookmark);
 
-    return results?.map((res) => Restaurant.fromJson(res)).toList();
+    return results
+        ?.map((res) => Restaurant.fromJson(res, decodeString: true))
+        .toList();
   }
 
   Future<Map> getFavoriteById(String id) async {
