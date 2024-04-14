@@ -1,8 +1,12 @@
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:restaurant_app_v1/common/routes.dart';
 import 'package:restaurant_app_v1/ui/favorite_ui.dart';
 import 'package:restaurant_app_v1/ui/home_ui.dart';
 import 'package:restaurant_app_v1/ui/setting_ui.dart';
+import 'package:restaurant_app_v1/utils/background_service.dart';
+import '../utils/notification_helper.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
@@ -15,6 +19,9 @@ class _BottomNavigationState extends State<BottomNavigation>
     with TickerProviderStateMixin {
   int _selectedIndex = 0;
   late List<Widget> _children;
+  final NotificationHelper _notificationHelper = NotificationHelper();
+  final BackgroundService service = BackgroundService();
+  PermissionStatus? status;
   @override
   void initState() {
     super.initState();
@@ -23,6 +30,15 @@ class _BottomNavigationState extends State<BottomNavigation>
       const FavoriteUi(),
       const SettingUi(),
     ];
+    _checkPermission();
+    _notificationHelper.configureSelectNotificationSubject(PageRoutes.detailUi);
+  }
+
+  void _checkPermission() async {
+    status = await Permission.notification.status;
+    if (!(status?.isGranted ?? true)) {
+      status = await Permission.notification.request();
+    }
   }
 
   void onItemTapped(int index) {

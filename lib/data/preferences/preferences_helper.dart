@@ -7,9 +7,9 @@ class PreferencesHelper {
 
   static const dailyRestaurant = 'DAILY_RESTAURANT';
 
-  Future<bool> get isDailyRestoActive async {
+  Future<bool?> get isDailyRestaurantActive async {
     final prefs = await sharedPreferences;
-    return prefs.getBool(dailyRestaurant) ?? false;
+    return prefs.getBool(dailyRestaurant);
   }
 
   void setDailyResto(bool value) async {
