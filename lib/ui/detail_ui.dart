@@ -7,11 +7,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:like_button/like_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:readmore/readmore.dart';
 import 'package:restaurant_app_v1/cubit/detail_restaurant_cubit.dart';
 import 'package:restaurant_app_v1/cubit/detail_restaurant_state.dart';
 import 'package:restaurant_app_v1/data/api/api_service.dart';
+import 'package:restaurant_app_v1/data/db/database_helper.dart';
 import 'package:restaurant_app_v1/data/model/detail_restaurant.dart';
 import 'package:restaurant_app_v1/utils/snackbar.dart';
 import 'package:restaurant_app_v1/widgets/error.dart';
@@ -42,6 +44,7 @@ class _DetailUiState extends State<DetailUi> {
       create: (context) => DetailRestaurantCubit(
         ApiService(),
         widget.id,
+        databaseHelper: DatabaseHelper(),
       ),
       child: BlocConsumer<DetailRestaurantCubit, DetailRestaurantState>(
         builder: (context, state) {
@@ -83,6 +86,16 @@ class _DetailUiState extends State<DetailUi> {
                 data.pictureId ?? '',
                 resolution: "medium",
               ),
+              actions: [
+                LikeButton(
+                  isLiked: state.isFavorite,
+                  onTap: (isLiked) async {
+                    BlocProvider.of<DetailRestaurantCubit>(context)
+                        .addToFavorite(state.dataRestaurant);
+                    return !isLiked;
+                  },
+                ),
+              ],
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

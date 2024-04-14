@@ -20,7 +20,7 @@ class CustomerReviewResult {
   Map<String, dynamic> toJson() => _$CustomerReviewResultToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class CustomerReview {
   final String? name;
   final String? review;

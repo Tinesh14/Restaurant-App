@@ -21,7 +21,9 @@ class DetailRestaurantMessage extends DetailRestaurantState {
 
 class DetailRestaurantSuccess extends DetailRestaurantState {
   final Restaurant dataRestaurant;
-  const DetailRestaurantSuccess(this.dataRestaurant);
+  final bool isFavorite;
+  const DetailRestaurantSuccess(this.dataRestaurant,
+      {required this.isFavorite});
 }
 
 class DetailRestaurantEmpty extends DetailRestaurantState {}

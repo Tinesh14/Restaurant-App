@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'common/navigation.dart';
 import 'common/routes.dart';
 import 'ui/splash_screen_ui.dart';
 
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
+      navigatorKey: navigatorKey,
       routes: PageRoutes().routes(),
       home: const SplashScreenUi(),
     );

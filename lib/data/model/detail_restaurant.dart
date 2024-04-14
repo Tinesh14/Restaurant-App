@@ -48,7 +48,7 @@ class Category {
   Map<String, dynamic> toJson() => _$CategoryToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Menus {
   final List<Category>? foods;
   final List<Category>? drinks;

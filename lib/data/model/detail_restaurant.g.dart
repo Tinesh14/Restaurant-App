@@ -40,6 +40,6 @@ Menus _$MenusFromJson(Map<String, dynamic> json) => Menus(
     );
 
 Map<String, dynamic> _$MenusToJson(Menus instance) => <String, dynamic>{
-      'foods': instance.foods,
-      'drinks': instance.drinks,
+      'foods': instance.foods?.map((e) => e.toJson()).toList(),
+      'drinks': instance.drinks?.map((e) => e.toJson()).toList(),
     };

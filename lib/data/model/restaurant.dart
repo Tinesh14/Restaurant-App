@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 
 import 'customer_review.dart';
@@ -5,7 +7,7 @@ import 'detail_restaurant.dart';
 
 part 'restaurant.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Restaurant {
   final String? id;
   final String? name;
@@ -34,5 +36,6 @@ class Restaurant {
   factory Restaurant.fromJson(Map<String, dynamic> json) =>
       _$RestaurantFromJson(json);
 
-  Map<String, dynamic> toJson() => _$RestaurantToJson(this);
+  Map<String, dynamic> toJson({bool convertToString = false}) =>
+      _$RestaurantToJson(this, convertToString);
 }
