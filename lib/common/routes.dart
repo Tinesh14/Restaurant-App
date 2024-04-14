@@ -17,9 +17,11 @@ class PageRoutes {
     return {
       homeUi: (context) => const HomeUi(),
       detailUi: (context) {
-        String argument = ModalRoute.of(context)?.settings.arguments as String;
+        Map<String, dynamic> argument =
+            ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
         return DetailUi(
-          id: argument,
+          id: argument['id'],
+          itemRestaurant: argument['data'],
         );
       },
       bottomNavigation: (context) => const BottomNavigation(),

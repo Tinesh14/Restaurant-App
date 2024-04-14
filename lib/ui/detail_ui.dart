@@ -21,13 +21,16 @@ import 'package:restaurant_app_v1/widgets/loading.dart';
 import 'package:restaurant_app_v1/widgets/offline.dart';
 
 import '../data/model/customer_review.dart';
+import '../data/model/restaurant.dart';
 import '../widgets/appbar.dart';
 
 class DetailUi extends StatefulWidget {
   String id;
+  Restaurant? itemRestaurant;
   DetailUi({
     super.key,
     required this.id,
+    this.itemRestaurant,
   });
 
   @override
@@ -45,6 +48,7 @@ class _DetailUiState extends State<DetailUi> {
         ApiService(),
         widget.id,
         databaseHelper: DatabaseHelper(),
+        dataRestaurant: widget.itemRestaurant,
       ),
       child: BlocConsumer<DetailRestaurantCubit, DetailRestaurantState>(
         builder: (context, state) {

@@ -10,10 +10,21 @@ class DetailRestaurantCubit extends Cubit<DetailRestaurantState> {
   final ApiService apiService;
   final String id;
   final DatabaseHelper databaseHelper;
-  DetailRestaurantCubit(this.apiService, this.id,
-      {required this.databaseHelper})
-      : super(DetailRestaurantLoading()) {
-    init();
+  Restaurant? dataRestaurant;
+  DetailRestaurantCubit(
+    this.apiService,
+    this.id, {
+    required this.databaseHelper,
+    this.dataRestaurant,
+  }) : super(DetailRestaurantLoading()) {
+    if (dataRestaurant != null) {
+      emit(DetailRestaurantSuccess(
+        dataRestaurant ?? Restaurant(),
+        isFavorite: true,
+      ));
+    } else {
+      init();
+    }
   }
 
   addToFavorite(Restaurant dataRestaurant) async {

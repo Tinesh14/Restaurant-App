@@ -95,10 +95,11 @@ class _FavoriteUiState extends State<FavoriteUi> {
                           return InkWell(
                             onTap: () async {
                               await Navigator.pushNamed(
-                                context,
-                                PageRoutes.detailUi,
-                                arguments: item.id ?? "",
-                              ).then(
+                                  context, PageRoutes.detailUi,
+                                  arguments: {
+                                    "id": item.id ?? "",
+                                    "data": item,
+                                  }).then(
                                 (value) => refresh(),
                               );
                             },

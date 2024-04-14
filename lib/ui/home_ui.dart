@@ -152,7 +152,10 @@ class _HomeUiState extends State<HomeUi> {
                               Navigator.pushNamed(
                                 context,
                                 PageRoutes.detailUi,
-                                arguments: item.id ?? "",
+                                arguments: {
+                                  "id": item.id ?? "",
+                                  "data": null,
+                                },
                               );
                             },
                             child: RestaurantWidget(
