@@ -16,6 +16,7 @@ final mockApiService = MockApiService();
 late ListRestaurantCubit listRestaurantCubit;
 @GenerateMocks([
   ApiService,
+  ListRestaurantCubit,
 ])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,7 @@ void main() {
   });
 
   group(
-    "List Restaurant",
+    "Unit Test List Restaurant",
     () {
       blocTest<ListRestaurantCubit, ListRestaurantState>(
         'Check Restaurant List if empty',
@@ -87,6 +88,63 @@ void main() {
           isA<ListRestaurantOffline>(),
           //  isA<CheckOrderPackageMessage>(),
         ],
+      );
+    },
+  );
+
+  group(
+    'Widget Test',
+    () {
+      testWidgets(
+        'test widget',
+        (widgetTester) async {
+          await widgetTester.runAsync(() async=> {
+            final stream0 = StreamController<ListRestaurantState>.broadcast().stream;
+              var lab = MockListRestaurantCubit();
+              //    Iterable iterable = jsonDecode(jsonEncode(dataLab));
+              // List<LabOrderItemView> data = List<LabOrderItemView>.from(
+              //   iterable.map(
+              //     (e) => LabOrderItemView.fromJson(e),
+              //   ),
+              // );
+              // when(lab.init("LAB", "MTMH", "PST3")).thenAnswer(
+              //   (realInvocation) => () {},
+              // );
+
+              // when(lab.stream).thenAnswer((_) => stream0);
+
+              // when(lab.state).thenAnswer(
+              //   (realInvocation) => LabSuccess(
+              //     labOrderItemView: data,
+              //     isItemExpired: false,
+              //   ),
+              // );
+              //               await tester.pumpWidget(
+              //   ScreenUtilInit(
+              //     designSize: const Size(375, 812),
+              //     minTextAdapt: true,
+              //     splitScreenMode: true,
+              //     builder: (context, child) {
+              //       return MaterialApp(
+              //         home: LabUi(
+              //           labCubit: lab,
+              //           firebaseRemoteConfig: MockFirebaseRemoteConfig(),
+              //           remotePromoRibbon: "true",
+              //           args: args,
+              //           isGrid: true,
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // );
+
+              // final ribbon = find.byWidgetPredicate(
+              //   (widget) => widget is Ribbon && widget.key == Key("list"),
+              // );
+
+              // expect(ribbon, findsOneWidget);
+          });
+        },
       );
     },
   );
