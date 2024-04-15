@@ -8,6 +8,8 @@ import 'restaurant.dart';
 
 part 'list_restaurant.g.dart';
 
+
+// pub run build_runner build --delete-conflicting-outputs
 RestaurantList restaurantListFromJson(String str) =>
     RestaurantList.fromJson(json.decode(str));
 
