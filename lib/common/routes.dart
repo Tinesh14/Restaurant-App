@@ -15,7 +15,7 @@ class PageRoutes {
 
   Map<String, WidgetBuilder> routes() {
     return {
-      homeUi: (context) => const HomeUi(),
+      homeUi: (context) => HomeUi(),
       detailUi: (context) {
         Map<String, dynamic> argument =
             ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;

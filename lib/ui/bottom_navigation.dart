@@ -26,7 +26,7 @@ class _BottomNavigationState extends State<BottomNavigation>
   void initState() {
     super.initState();
     _children = [
-      const HomeUi(),
+      HomeUi(),
       const FavoriteUi(),
       const SettingUi(),
     ];

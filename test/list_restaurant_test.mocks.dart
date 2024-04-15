@@ -3,10 +3,13 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i7;
+import 'dart:async' as _i8;
 
+import 'package:flutter_bloc/flutter_bloc.dart' as _i10;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i6;
+import 'package:mockito/src/dummies.dart' as _i7;
+import 'package:restaurant_app_v1/cubit/list_restaurant_cubit.dart' as _i9;
+import 'package:restaurant_app_v1/cubit/list_restaurant_state.dart' as _i6;
 import 'package:restaurant_app_v1/data/api/api_service.dart' as _i5;
 import 'package:restaurant_app_v1/data/model/customer_review.dart' as _i4;
 import 'package:restaurant_app_v1/data/model/detail_restaurant.dart' as _i3;
@@ -58,6 +61,27 @@ class _FakeCustomerReviewResult_2 extends _i1.SmartFake
         );
 }
 
+class _FakeApiService_3 extends _i1.SmartFake implements _i5.ApiService {
+  _FakeApiService_3(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeListRestaurantState_4 extends _i1.SmartFake
+    implements _i6.ListRestaurantState {
+  _FakeListRestaurantState_4(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [ApiService].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -77,7 +101,7 @@ class MockApiService extends _i1.Mock implements _i5.ApiService {
           [pictureId],
           {#resolution: resolution},
         ),
-        returnValue: _i6.dummyValue<String>(
+        returnValue: _i7.dummyValue<String>(
           this,
           Invocation.method(
             #imageUrl,
@@ -88,62 +112,62 @@ class MockApiService extends _i1.Mock implements _i5.ApiService {
       ) as String);
 
   @override
-  _i7.Future<_i2.RestaurantList> getListRestaurant() => (super.noSuchMethod(
+  _i8.Future<_i2.RestaurantList> getListRestaurant() => (super.noSuchMethod(
         Invocation.method(
           #getListRestaurant,
           [],
         ),
-        returnValue: _i7.Future<_i2.RestaurantList>.value(_FakeRestaurantList_0(
+        returnValue: _i8.Future<_i2.RestaurantList>.value(_FakeRestaurantList_0(
           this,
           Invocation.method(
             #getListRestaurant,
             [],
           ),
         )),
-      ) as _i7.Future<_i2.RestaurantList>);
+      ) as _i8.Future<_i2.RestaurantList>);
 
   @override
-  _i7.Future<_i3.RestaurantDetail> getDetailRestaurant(String? id) =>
+  _i8.Future<_i3.RestaurantDetail> getDetailRestaurant(String? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #getDetailRestaurant,
           [id],
         ),
         returnValue:
-            _i7.Future<_i3.RestaurantDetail>.value(_FakeRestaurantDetail_1(
+            _i8.Future<_i3.RestaurantDetail>.value(_FakeRestaurantDetail_1(
           this,
           Invocation.method(
             #getDetailRestaurant,
             [id],
           ),
         )),
-      ) as _i7.Future<_i3.RestaurantDetail>);
+      ) as _i8.Future<_i3.RestaurantDetail>);
 
   @override
-  _i7.Future<_i2.RestaurantList> searchRestaurant(String? query) =>
+  _i8.Future<_i2.RestaurantList> searchRestaurant(String? query) =>
       (super.noSuchMethod(
         Invocation.method(
           #searchRestaurant,
           [query],
         ),
-        returnValue: _i7.Future<_i2.RestaurantList>.value(_FakeRestaurantList_0(
+        returnValue: _i8.Future<_i2.RestaurantList>.value(_FakeRestaurantList_0(
           this,
           Invocation.method(
             #searchRestaurant,
             [query],
           ),
         )),
-      ) as _i7.Future<_i2.RestaurantList>);
+      ) as _i8.Future<_i2.RestaurantList>);
 
   @override
-  _i7.Future<_i4.CustomerReviewResult> addReviewRestaurant(
+  _i8.Future<_i4.CustomerReviewResult> addReviewRestaurant(
           Map<String, dynamic>? data) =>
       (super.noSuchMethod(
         Invocation.method(
           #addReviewRestaurant,
           [data],
         ),
-        returnValue: _i7.Future<_i4.CustomerReviewResult>.value(
+        returnValue: _i8.Future<_i4.CustomerReviewResult>.value(
             _FakeCustomerReviewResult_2(
           this,
           Invocation.method(
@@ -151,5 +175,119 @@ class MockApiService extends _i1.Mock implements _i5.ApiService {
             [data],
           ),
         )),
-      ) as _i7.Future<_i4.CustomerReviewResult>);
+      ) as _i8.Future<_i4.CustomerReviewResult>);
+}
+
+/// A class which mocks [ListRestaurantCubit].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockListRestaurantCubit extends _i1.Mock
+    implements _i9.ListRestaurantCubit {
+  MockListRestaurantCubit() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.ApiService get apiService => (super.noSuchMethod(
+        Invocation.getter(#apiService),
+        returnValue: _FakeApiService_3(
+          this,
+          Invocation.getter(#apiService),
+        ),
+      ) as _i5.ApiService);
+
+  @override
+  _i6.ListRestaurantState get state => (super.noSuchMethod(
+        Invocation.getter(#state),
+        returnValue: _FakeListRestaurantState_4(
+          this,
+          Invocation.getter(#state),
+        ),
+      ) as _i6.ListRestaurantState);
+
+  @override
+  _i8.Stream<_i6.ListRestaurantState> get stream => (super.noSuchMethod(
+        Invocation.getter(#stream),
+        returnValue: _i8.Stream<_i6.ListRestaurantState>.empty(),
+      ) as _i8.Stream<_i6.ListRestaurantState>);
+
+  @override
+  bool get isClosed => (super.noSuchMethod(
+        Invocation.getter(#isClosed),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  dynamic init({bool? isLoad = false}) => super.noSuchMethod(Invocation.method(
+        #init,
+        [],
+        {#isLoad: isLoad},
+      ));
+
+  @override
+  dynamic search(String? query) => super.noSuchMethod(Invocation.method(
+        #search,
+        [query],
+      ));
+
+  @override
+  void emit(_i6.ListRestaurantState? state) => super.noSuchMethod(
+        Invocation.method(
+          #emit,
+          [state],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void onChange(_i10.Change<_i6.ListRestaurantState>? change) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #onChange,
+          [change],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void addError(
+    Object? error, [
+    StackTrace? stackTrace,
+  ]) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #addError,
+          [
+            error,
+            stackTrace,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void onError(
+    Object? error,
+    StackTrace? stackTrace,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #onError,
+          [
+            error,
+            stackTrace,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i8.Future<void> close() => (super.noSuchMethod(
+        Invocation.method(
+          #close,
+          [],
+        ),
+        returnValue: _i8.Future<void>.value(),
+        returnValueForMissingStub: _i8.Future<void>.value(),
+      ) as _i8.Future<void>);
 }

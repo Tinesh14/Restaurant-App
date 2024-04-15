@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +15,11 @@ import 'package:restaurant_app_v1/widgets/restaurant_row.dart';
 import '../common/routes.dart';
 
 class HomeUi extends StatefulWidget {
-  const HomeUi({super.key});
+  ListRestaurantCubit? cubitRestaurant;
+  HomeUi({
+    super.key,
+    this.cubitRestaurant,
+  });
 
   @override
   _HomeUiState createState() => _HomeUiState();
@@ -115,9 +119,11 @@ class _HomeUiState extends State<HomeUi> {
                 height: 10,
               ),
               BlocProvider<ListRestaurantCubit>(
-                create: (context) => ListRestaurantCubit(
-                  ApiService(),
-                ),
+                create: (context) =>
+                    widget.cubitRestaurant ??
+                    ListRestaurantCubit(
+                      ApiService(),
+                    ),
                 child: BlocConsumer<ListRestaurantCubit, ListRestaurantState>(
                   builder: (context, state) {
                     cubitListRestaurant =
@@ -142,6 +148,7 @@ class _HomeUiState extends State<HomeUi> {
                     } else if (state is ListRestaurantSuccess) {
                       var dataRestaurant = state.dataRestaurant;
                       return ListView.builder(
+                        key: const Key('successKey'),
                         physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: dataRestaurant.length,

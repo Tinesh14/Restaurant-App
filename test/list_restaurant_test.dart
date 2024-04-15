@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -9,6 +11,7 @@ import 'package:restaurant_app_v1/cubit/list_restaurant_state.dart';
 import 'package:restaurant_app_v1/data/api/api_service.dart';
 import 'package:restaurant_app_v1/data/model/list_restaurant.dart';
 import 'package:restaurant_app_v1/data/model/restaurant.dart';
+import 'package:restaurant_app_v1/ui/home_ui.dart';
 
 import 'list_restaurant_test.mocks.dart';
 
@@ -96,53 +99,40 @@ void main() {
     'Widget Test',
     () {
       testWidgets(
-        'test widget',
+        'test widget listview restaurant',
         (widgetTester) async {
-          await widgetTester.runAsync(() async=> {
-            final stream0 = StreamController<ListRestaurantState>.broadcast().stream;
-              var lab = MockListRestaurantCubit();
-              //    Iterable iterable = jsonDecode(jsonEncode(dataLab));
-              // List<LabOrderItemView> data = List<LabOrderItemView>.from(
-              //   iterable.map(
-              //     (e) => LabOrderItemView.fromJson(e),
-              //   ),
-              // );
-              // when(lab.init("LAB", "MTMH", "PST3")).thenAnswer(
-              //   (realInvocation) => () {},
-              // );
+          await widgetTester.runAsync(() async {
+            final stream0 =
+                StreamController<ListRestaurantState>.broadcast().stream;
+            var listRestaurant = MockListRestaurantCubit();
+            when(listRestaurant.init(isLoad: true)).thenAnswer(
+              (realInvocation) => () {},
+            );
+            when(listRestaurant.stream).thenAnswer((_) => stream0);
 
-              // when(lab.stream).thenAnswer((_) => stream0);
+            when(listRestaurant.state).thenAnswer(
+              (realInvocation) => ListRestaurantSuccess(
+                [
+                  Restaurant(),
+                  Restaurant(),
+                ],
+              ),
+            );
+            await widgetTester.pumpWidget(
+              MaterialApp(
+                home: HomeUi(
+                  cubitRestaurant: listRestaurant,
+                ),
+              ),
+            );
+            await widgetTester.pump(const Duration(seconds: 5));
 
-              // when(lab.state).thenAnswer(
-              //   (realInvocation) => LabSuccess(
-              //     labOrderItemView: data,
-              //     isItemExpired: false,
-              //   ),
-              // );
-              //               await tester.pumpWidget(
-              //   ScreenUtilInit(
-              //     designSize: const Size(375, 812),
-              //     minTextAdapt: true,
-              //     splitScreenMode: true,
-              //     builder: (context, child) {
-              //       return MaterialApp(
-              //         home: LabUi(
-              //           labCubit: lab,
-              //           firebaseRemoteConfig: MockFirebaseRemoteConfig(),
-              //           remotePromoRibbon: "true",
-              //           args: args,
-              //           isGrid: true,
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // );
+            final listView = find.byWidgetPredicate(
+              (widget) =>
+                  widget is ListView && widget.key == const Key("successKey"),
+            );
 
-              // final ribbon = find.byWidgetPredicate(
-              //   (widget) => widget is Ribbon && widget.key == Key("list"),
-              // );
-
-              // expect(ribbon, findsOneWidget);
+            expect(listView, findsOneWidget);
           });
         },
       );
